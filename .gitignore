@@ -1,2 +1,4 @@
+/.tmp_dagster_home_*
 /.venv
 /data/mydb.duckdb
+__pycache__
