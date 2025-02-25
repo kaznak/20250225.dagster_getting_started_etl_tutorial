@@ -154,6 +154,7 @@ monthly_partition = dg.MonthlyPartitionsDefinition(start_date="2024-01-01")
     compute_kind="duckdb",
     group_name="analysis",
     deps=[joined_data],
+    automation_condition=dg.AutomationCondition.eager(),
 )
 def monthly_sales_performance(
     context: dg.AssetExecutionContext, duckdb: DuckDBResource
@@ -213,6 +214,7 @@ product_category_partition = dg.StaticPartitionsDefinition(
     partitions_def=product_category_partition,
     group_name="analysis",
     compute_kind="duckdb",
+    automation_condition=dg.AutomationCondition.eager(),
 )
 def product_performance(context: dg.AssetExecutionContext, duckdb: DuckDBResource):
     product_category_str = context.partition_key
@@ -259,6 +261,12 @@ def product_performance(context: dg.AssetExecutionContext, duckdb: DuckDBResourc
     )
 
 
+weekly_update_schedule = dg.ScheduleDefinition(
+    name="analysis_update_job",
+    target=dg.AssetSelection.keys("joined_data").upstream(),
+    cron_schedule="0 0 * * 1",  # every Monday at midnight
+)
+
 defs = dg.Definitions(
     assets=[
         products,
@@ -269,5 +277,6 @@ defs = dg.Definitions(
         product_performance,
     ],
     asset_checks=[missing_dimension_check],
+    schedules=[weekly_update_schedule],
     resources={"duckdb": DuckDBResource(database="data/mydb.duckdb")},
 )
