@@ -4,5 +4,5 @@ setup(
     name="etl_tutorial",
     packages=find_packages(),
     install_requires=["dagster", "dagster-cloud", "duckdb", "dagster-duckdb"],
-    extras_require={"dev": ["dagster-webserver", "pytest"]},
+    extras_require={"dev": ["dagster-webserver", "pytest", "black", "isort"]},
 )
