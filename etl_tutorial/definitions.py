@@ -7,5 +7,5 @@ import dagster as dg
 
 defs = dg.Definitions(
     assets=[],
-    resources={},
+    resources={"duckdb": DuckDBResource(database="data/mydb.duckdb")},
 )
