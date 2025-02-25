@@ -1,9 +1,8 @@
 import json
 import os
 
-from dagster_duckdb import DuckDBResource
-
 import dagster as dg
+from dagster_duckdb import DuckDBResource
 
 defs = dg.Definitions(
     assets=[],
